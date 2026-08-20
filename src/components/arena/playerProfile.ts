@@ -109,6 +109,8 @@ export function defaultProfile(): PlayerProfile {
     ownedPets: starterPets(),
     ownedSkins: [],
     equippedSkins: {},
+    ownedAttachments: [],
+    equippedAttachments: {},
     vault: defaultVault(),
   };
 }
