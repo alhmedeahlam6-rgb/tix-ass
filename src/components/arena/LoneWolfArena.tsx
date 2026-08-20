@@ -3095,6 +3095,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
                   })()),
                 ),
             armor: emptyArmor(),
+            backpack: defaultBackpack(isHuman && profileRef.current?.loadout.tactical === "legPockets" ? 2 : 1),
           };
           // personal spawn effect, sitting on this fighter's own spot
           const fx = createSpawnFx(team === "blue" ? "water" : "fire", home.top, initialQuality);
