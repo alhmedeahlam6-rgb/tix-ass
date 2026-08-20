@@ -53,8 +53,8 @@
 - Team Voice Chat: In-lobby microphone and speaker toggles.
 
 ## Phase 2: Pre-Match & Loadout
-- Mode Selection: Choosing between BR, CS (Clash Squad), Lone Wolf, or Custom Rooms.
-- Ranked vs. Casual: Toggle for playing for rank points or just for fun.
+- X Mode Selection: Choosing between BR, CS (Clash Squad), Lone Wolf, or Custom Rooms.
+- X Ranked vs. Casual: Toggle for playing for rank points or just for fun.
 - Map Download Center: A UI to manually download specific maps to save phone storage.
 - Loadout - Scanner: Reveals players in the plane and nearby when parachuting.
 - Loadout - Bonfire: Placed on the ground in-game to heal HP and EP over time.
