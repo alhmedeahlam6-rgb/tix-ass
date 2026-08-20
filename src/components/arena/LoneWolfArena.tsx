@@ -2525,7 +2525,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
         const id = weaponRef.current;
         const cur = ammoRef.current[id];
         if (cur) {
-          const mag = getMagazine(id);
+          const mag = getMagazine(id, profileRef.current);
           const need = Math.min(mag - cur.mag, cur.reserve);
           if (need > 0) {
             setAmmo((prev) => {
