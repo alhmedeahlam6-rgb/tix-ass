@@ -66,6 +66,7 @@ Last full audit: 2026-08-19.
 - Damage profiles: range falloff, headshot multiplier, per-zone damage.
 - Treatment Rifle and Treatment Sniper: shooting teammates restores HP (green tracer + popup), shooting enemies still deals reduced damage.
 - Bullet spread and recoil applied per shot, plus tracers.
+- Weapon attachments: muzzle, silencer, foregrip, magazine, stock and scope slots that modify damage, range, magazine size, reload speed and recoil; owned attachments persist and apply during live fire.
 
 ## 6. Combat
 - Hitscan shooting with raycast against fighters, walls and level geometry.
