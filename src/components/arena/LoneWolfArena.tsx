@@ -371,6 +371,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
   const [ffCoinCount, setFfCoinCount] = useState(0);
   const [backpackLevel, setBackpackLevel] = useState<BackpackLevel>(1);
   const ffCoinsRef = useRef<FfCoinPickup[]>([]);
+  const [teammates, setTeammates] = useState<Teammate[]>([]);
   /** fraction (0..1) left in the partially used medkit at the top of the stack */
   /** Energy Points: yellow reserve that trickles back into HP over time */
   const [ep, setEp] = useState(0);
