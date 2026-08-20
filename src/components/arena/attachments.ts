@@ -90,12 +90,8 @@ export function attachmentsForWeapon(weaponId: string) {
   return ATTACHMENTS.filter((a) => a.weaponId === weaponId);
 }
 
-export function applyAttachmentStats<T extends {
-  damage: number;
-  fireRate: number;
-  range: number;
-  magazine: number;
-}>(base: T, attachmentId: string | null): T {
+export function applyAttachmentStats(base: Weapon | undefined, attachmentId: string | null): Weapon | null {
+  if (!base) return null;
   const a = getAttachment(attachmentId);
   if (!a) return base;
   return {
