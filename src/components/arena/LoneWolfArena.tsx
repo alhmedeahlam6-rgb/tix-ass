@@ -5051,7 +5051,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
             const cur = ammo[activeId];
             const mag = cur?.mag ?? 0;
             const reserve = cur?.reserve ?? 0;
-            const magSize = getMagazine(activeId);
+            const magSize = getMagazine(activeId, profileRef.current);
             const hasAmmo = magSize > 0;
             const empty = hasAmmo && mag === 0;
             const low = hasAmmo && mag > 0 && mag <= Math.max(1, Math.ceil(magSize * 0.25));
