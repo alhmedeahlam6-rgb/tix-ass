@@ -91,7 +91,7 @@
 - X Ping/Marker System: Double tap to mark enemies, single tap to mark loot or locations.
 - Minimap: Top left map showing safe zones, your team, and red dots for unsilenced shots.
 - Kill Feed: Text scrolling showing who killed who and with what weapon.
-- Team UI: Teammate health bars, names, knocked/dead state.
+- X Team UI: Teammate health bars, names, knocked/dead state.
 - Custom HUD Settings: Resize, move, and change transparency of every button.
 
 ## Phase 5: Looting & Inventory
