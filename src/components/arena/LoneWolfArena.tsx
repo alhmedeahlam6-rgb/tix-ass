@@ -46,6 +46,7 @@ import { createPingMarker, updatePings, nextPingKind, pingKindAtIndex, type Ping
 import { addDaySkybox, DAY_HORIZON, type Skybox } from "./skybox";
 import { createImpactFx, type ImpactFx } from "./impactFx";
 import { ARENA_MAPS, type MapId } from "./maps";
+import { type GameMode, type MatchType, rankPointsForMatch } from "./modes";
 import { OUTPOST_BARRIER, clampInsideBarrier } from "./mapBarrier";
 import { saveMatchResult, getLeaderboard } from "@/lib/arena.functions";
 import { initSfx, playSfx, playSfxStoppable, playSfxAt, playVictory, warmSfx, suspendSfx, resumeSfx, setSfxMuted, setSfxVolume, setWeatherAmbience, stopWeatherAmbience, playThunder } from "./sfx";
