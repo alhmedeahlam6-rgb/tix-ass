@@ -135,7 +135,7 @@ export default function GameShell() {
       {mountArena && (
         <div className={phase === "play" ? "h-full w-full" : "h-full w-full opacity-0"}>
           <Suspense fallback={null}>
-            <LoneWolfArena key={deployStart.current} mapId={mapId} profile={profile} onProfileChange={setProfile} onReady={() => setArenaReady(true)} onExit={backToLobby} />
+            <LoneWolfArena key={deployStart.current} mapId={mapId} gameMode={gameMode} matchType={matchType} profile={profile} onProfileChange={setProfile} onReady={() => setArenaReady(true)} onExit={backToLobby} />
           </Suspense>
         </div>
       )}
