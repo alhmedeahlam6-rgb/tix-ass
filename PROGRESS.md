@@ -25,7 +25,7 @@ Last full audit: 2026-08-19.
 - Weapon shop / armory: buy and equip weapons with credits; sell-all refund.
 - Weapon slots: two heavy slots + sidearm, with slot switching and drop-weapon.
 - Selected character persists in localStorage.
-- Loadout panel: one active power + up to three passive skills + one tactical item; tactical choices include Bounty Token (bonus gold on first kill) and Armor Crate (spawn with random vest + helmet).
+- Loadout panel: one active power + up to three passive skills + one tactical item; tactical choices include Bounty Token (bonus gold on first kill), Armor Crate (spawn with random vest + helmet) and Leg Pockets (start with backpack level 2).
 
 ## 2. Progression & identity
 - Guest login: persistent guest ID generated on first boot, stored in localStorage.
