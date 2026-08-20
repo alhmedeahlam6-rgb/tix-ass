@@ -1418,6 +1418,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
       setMatch(matchRef.current);
       setKillFeed([]);
       saveSentRef.current = false;
+      matchStartTimeRef.current = performance.now();
       // clear lingering decoys and FF coins between matches
       for (const d of decoys) decoyGroup.remove(d.root);
       decoys.length = 0;
