@@ -34,6 +34,7 @@ Last full audit: 2026-08-19.
 - Gold currency: earned from every match (base pay + win + kills + headshot bonus), persists across sessions.
 - Diamonds currency: premium currency stored in profile, awarded from Luck Royale and Booyah Pass rewards.
 - Match rewards: Lone Wolf Arena reports match results and applies gold/XP/character progress to the profile.
+- Ranked ladder: Ranked matches award rank points; tier updates in profile (Bronze → Heroic).
 - Luck Royale store: gacha-style spinning wheel in the lobby that spends Gold for random gold, diamond, XP or bonus spins.
 - Booyah Pass tier tracking with claimable rewards: each tier grants gold and/or diamonds; UI lists claimable tiers and one-tap claim.
 - Character Link system: characters beyond the starter are unlocked by playing a set number of matches with them; picker shows lock status and remaining matches.
