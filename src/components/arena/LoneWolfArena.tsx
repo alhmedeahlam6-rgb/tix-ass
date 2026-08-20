@@ -1480,11 +1480,11 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
     const startReload = (weaponId: string) => {
       if (isReloadingRef.current) return;
       const cur = ammoRef.current[weaponId];
-      if (!cur || cur.mag >= getMagazine(weaponId) || cur.reserve <= 0) return;
+      if (!cur || cur.mag >= getMagazine(weaponId, profileRef.current) || cur.reserve <= 0) return;
       isReloadingRef.current = true;
       reloadingWeaponRef.current = weaponId;
       setIsReloading(true);
-      reloadTimerRef.current = getReloadTime(weaponId);
+      reloadTimerRef.current = getReloadTime(weaponId, profileRef.current);
       reloadLeftRef.current = reloadTimerRef.current;
       setReloadLeft(reloadTimerRef.current);
       const mode = getWeaponBehavior(weaponId).mode;
