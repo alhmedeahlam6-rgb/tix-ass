@@ -8,7 +8,7 @@
 
 import { PASSIVE_SKILLS, combinePassives, defaultLoadout, loadLoadout, type Loadout, type PassiveSkillId } from "./skills";
 import { TACTICAL_IDS, type TacticalId } from "./tactical";
-import { PETS, defaultPet, loadPet, type PetId } from "./pets";
+import { PETS, defaultPet, loadPet, starterPets, type PetId } from "./pets";
 import { defaultVault, loadVault } from "./vault";
 
 export type PlayerProfile = {

@@ -4092,7 +4092,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
         })),
         player: human ? { x: walkPos.x, z: walkPos.z, yaw } : null,
         decoys: decoys.map((d) => ({ x: d.root.position.x, z: d.root.position.z, team: d.team, ttl: d.ttl })),
-        pings: pings.map((p) => ({ x: p.pos.x, z: p.pos.z, kind: p.kind, ttl: p.ttl })),
+        pings: pings.map((p) => ({ x: p.pos.x, z: p.pos.z, kind: p.kind, ttl: p.life })),
       };
 
       if (damageFlashRef.current > 0) {
