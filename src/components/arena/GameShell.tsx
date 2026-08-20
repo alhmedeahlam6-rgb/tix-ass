@@ -71,7 +71,9 @@ export default function GameShell() {
   const [arenaReady, setArenaReady] = useState(false);
   const [tip, setTip] = useState(0);
   const [mapId, setMapId] = useState<MapId>("frostline");
-  const [mapOpen, setMapOpen] = useState(false);
+  const [gameMode, setGameMode] = useState<GameMode>(DEFAULT_MODE);
+  const [matchType, setMatchType] = useState<MatchType>(DEFAULT_MATCH_TYPE);
+  const [modeOpen, setModeOpen] = useState(false);
   const [profile, setProfile] = useState<PlayerProfile>(() => loadProfile());
   const [profileOpen, setProfileOpen] = useState(false);
   const [storeOpen, setStoreOpen] = useState(false);
