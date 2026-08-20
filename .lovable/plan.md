@@ -31,6 +31,7 @@
 - X Team HUD panel with squad HP/alive status — files: `src/components/arena/TeamPanel.tsx`, `src/components/arena/LoneWolfArena.tsx`
 - X Backpack system + FF Coins in-match economy — files: `src/components/arena/backpack.ts`, `src/components/arena/LoneWolfArena.tsx`
 - X Leg Pockets tactical grants starting backpack level 2 — files: `src/components/arena/LoneWolfArena.tsx`
+- X Weapon attachment system: own, equip, and apply muzzle/silencer/foregrip/magazine/stock/scope stat modifiers in live matches — files: `src/components/arena/attachments.ts`, `src/components/arena/ArmoryPanel.tsx`, `src/components/arena/LoneWolfArena.tsx`, `src/components/arena/playerProfile.ts`
 
 ---
 
