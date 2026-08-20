@@ -21,6 +21,7 @@ Last full audit: 2026-08-19.
 - 3D-lit lobby dashboard with Play, Settings, Character, Map, Profile and Store entries.
 - Character picker: 6 operatives, each with tagline, colour, accent and a signature power; live 3D capsule preview.
 - Map select: choose the arena before deploying.
+- Mode select: choose Lone Wolf, Clash Squad or Battle Royale; toggle Ranked vs Casual.
 - Weapon shop / armory: buy and equip weapons with credits; sell-all refund.
 - Weapon slots: two heavy slots + sidearm, with slot switching and drop-weapon.
 - Selected character persists in localStorage.
