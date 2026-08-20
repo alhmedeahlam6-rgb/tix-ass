@@ -1342,6 +1342,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
       f.hp = MAX_HP;
       f.respawnIn = 0;
       f.cooldown = 0.8 + Math.random() * 1.2;
+      f.backpack.items = [];
       if (f.ai) {
         // fresh brain on respawn, and pick up any difficulty change mid-match
         const prof = settingsRef.current.botDifficulty;
@@ -1367,6 +1368,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
         grounded = true;
         yaw = Math.atan2(f.pos.x, f.pos.z);
         pitch = 0;
+        setBackpackLevel(f.backpack.level);
       }
       syncHud();
     };
