@@ -90,7 +90,7 @@ import {
   type Weapon,
 } from "./weapons";
 import { createSafeZone, updateSafeZone, damageOutsideZone, createSafeZoneVisual, type SafeZone } from "./safeZone";
-import { defaultBackpack, scanFfCoinPickups, spawnFfCoins, disposeFfCoins, type Backpack, type FfCoinPickup } from "./backpack";
+import { defaultBackpack, scanFfCoinPickups, spawnFfCoins, disposeFfCoins, type Backpack, type BackpackLevel, type FfCoinPickup } from "./backpack";
 import {
   BOT_PROFILES,
   createBotBrain,
