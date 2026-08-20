@@ -24,6 +24,16 @@ export default function ArmoryPanel({ profile, onChange, onClose }: Props) {
     onChange(next);
   };
 
+  const equipAttachment = (weaponId: string, attachmentId: string | null) => {
+    const next = { ...profile, equippedAttachments: { ...profile.equippedAttachments } };
+    if (attachmentId) {
+      next.equippedAttachments[weaponId] = attachmentId;
+    } else {
+      delete next.equippedAttachments[weaponId];
+    }
+    onChange(next);
+  };
+
   return (
     <div className="pointer-events-auto absolute inset-0 z-[60] flex items-center justify-center bg-background/85 p-4 backdrop-blur-md">
       <div className="flex h-full max-h-[42rem] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-border/60 bg-card/80 shadow-[var(--shadow-hud)]">
