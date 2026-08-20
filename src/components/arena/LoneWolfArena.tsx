@@ -1708,7 +1708,8 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
       if (weaponCooldownRef.current > 0) return false;
 
       const weaponId = weaponRef.current;
-      const w = applySkinStats(getWeapon(weaponId) ?? undefined, profileRef.current?.equippedSkins[weaponId]);
+      const skinned = applySkinStats(getWeapon(weaponId) ?? undefined, profileRef.current?.equippedSkins[weaponId]);
+      const w = applyAttachmentStats(skinned ?? undefined, profileRef.current?.equippedAttachments[weaponId]);
       if (!w) return false;
       const behavior = getWeaponBehavior(weaponId);
       const weaponName = w.name;
