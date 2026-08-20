@@ -4409,7 +4409,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
     setOwned((o) => [...o, w.id]);
     setAmmo((prev) => ({
       ...prev,
-      [w.id]: { mag: getMagazine(w.id), reserve: getReserveAmmo(w.id) },
+      [w.id]: { mag: getMagazine(w.id, profileRef.current), reserve: getReserveAmmo(w.id) },
     }));
     equipWeapon(w);
   };
