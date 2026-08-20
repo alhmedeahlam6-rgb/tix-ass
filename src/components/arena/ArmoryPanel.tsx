@@ -122,6 +122,60 @@ export default function ArmoryPanel({ profile, onChange, onClose }: Props) {
                         })}
                       </div>
                     )}
+
+                    {/* attachments for this weapon */}
+                    {(() => {
+                      const attachments = attachmentsForWeapon(w.id).filter((a) => profile.ownedAttachments.includes(a.id));
+                      const equippedId = profile.equippedAttachments[w.id];
+                      if (attachments.length === 0) return null;
+                      return (
+                        <div className="mt-4 rounded-2xl border border-border/40 bg-card/30 p-3">
+                          <div className="mb-2 flex items-center gap-2">
+                            <Crosshair className="h-3.5 w-3.5 text-[var(--hud-accent)]" />
+                            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground">Attachment</p>
+                          </div>
+                          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                            <button
+                              type="button"
+                              onClick={() => equipAttachment(w.id, null)}
+                              className={`flex items-center gap-3 rounded-xl border p-3 text-left transition active:scale-95 ${
+                                !equippedId
+                                  ? "border-[var(--hud-accent)] bg-[var(--hud-accent)]/10"
+                                  : "border-border/40 bg-card/30 hover:bg-card/50"
+                              }`}
+                            >
+                              <span className="text-[11px] font-bold uppercase tracking-wide text-foreground">None</span>
+                              {!equippedId && <Check className="ml-auto h-4 w-4 text-[var(--hud-accent)]" />}
+                            </button>
+                            {attachments.map((a) => {
+                              const equipped = equippedId === a.id;
+                              return (
+                                <button
+                                  key={a.id}
+                                  type="button"
+                                  onClick={() => equipAttachment(w.id, a.id)}
+                                  className={`flex flex-col gap-1 rounded-xl border p-3 text-left transition active:scale-95 ${
+                                    equipped
+                                      ? "border-[var(--hud-accent)] bg-[var(--hud-accent)]/10"
+                                      : "border-border/40 bg-card/30 hover:bg-card/50"
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-[11px] font-bold uppercase tracking-wide text-foreground">
+                                      {a.name}
+                                    </span>
+                                    {equipped && <Check className="ml-auto h-4 w-4 text-[var(--hud-accent)]" />}
+                                  </div>
+                                  <p className="text-[9px] uppercase tracking-widest text-muted-foreground">
+                                    {attachmentStatText(a)}
+                                  </p>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </div>
                 );
               })}
