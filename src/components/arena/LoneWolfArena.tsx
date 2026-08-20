@@ -280,13 +280,17 @@ type ArenaProps = {
   onExit?: () => void;
   /** which map / mode to play */
   mapId?: MapId;
+  /** selected game mode */
+  gameMode?: GameMode;
+  /** ranked or casual */
+  matchType?: MatchType;
   /** persistent guest profile */
   profile?: PlayerProfile;
   /** called when match rewards update the profile */
   onProfileChange?: (p: PlayerProfile) => void;
 };
 
-export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", profile, onProfileChange }: ArenaProps = {}) {
+export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", gameMode = "loneWolf", matchType = "casual", profile, onProfileChange }: ArenaProps = {}) {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const mapIdRef = useRef<MapId>(mapId);
   mapIdRef.current = mapId;
