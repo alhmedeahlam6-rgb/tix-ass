@@ -151,6 +151,8 @@ export function loadProfile(): PlayerProfile {
       ownedPets: loadOwnedPets(),
       ownedSkins: Array.isArray(saved.ownedSkins) ? saved.ownedSkins.filter((s): s is string => typeof s === "string") : [],
       equippedSkins: isRecordOfStrings(saved.equippedSkins) ? saved.equippedSkins : {},
+      ownedAttachments: Array.isArray(saved.ownedAttachments) ? saved.ownedAttachments.filter((s): s is string => typeof s === "string") : [],
+      equippedAttachments: isRecordOfStrings(saved.equippedAttachments) ? saved.equippedAttachments : {},
       vault: Array.isArray(saved.vault) ? saved.vault.filter((s): s is string => typeof s === "string") : defaultVault(),
     };
   } catch {
