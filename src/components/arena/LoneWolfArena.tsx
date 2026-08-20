@@ -52,6 +52,7 @@ import { saveMatchResult, getLeaderboard } from "@/lib/arena.functions";
 import { initSfx, playSfx, playSfxStoppable, playSfxAt, playVictory, warmSfx, suspendSfx, resumeSfx, setSfxMuted, setSfxVolume, setWeatherAmbience, stopWeatherAmbience, playThunder } from "./sfx";
 import { createWeather, type Weather } from "./weather";
 import SettingsPanel from "./SettingsPanel";
+import TeamPanel, { type Teammate } from "./TeamPanel";
 import {
   AIM_ASSIST_STRENGTH,
   defaultSettings,
