@@ -86,6 +86,8 @@ Last full audit: 2026-08-19.
 - Throwables: frag (5s fuse, 300 dmg), flashbang (1.7s fuse, 16 m blind — whiteout for the player, bots hold fire ~3s), smoke (billboard cloud that blocks bot line of sight for 9s) and decoy (fake gunshots, minimap bait, draws bots). Cycle with `G` on desktop or the chip above the grenade button on touch.
 - Melee deflection: Pan, Titanium Bat and Katana block ~35% of shots that hit the back; available in the shop and on some bots.
 - Armor system (vests + helmets): level 1-4 pickups reduce body/headshot damage with durability that degrades as it absorbs hits; rarity-colored 3D world pickups and HUD durability strip.
+- Backpack system: level 1-3 bags with capacity/level shown in HUD; Leg Pockets tactical starts the player at backpack level 2.
+- FF Coins: yellow ground tokens dropped by eliminated fighters and auto-picked up near the player; count shown in HUD.
 
 ## 7. Movement & controls
 - Desktop: WASD move, jump, sprint, crouch, prone, reload, gloo wall, bomb, medkit, character power, shop — all rebindable.
