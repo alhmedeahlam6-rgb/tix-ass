@@ -41,16 +41,19 @@ import { combinePassives, type Loadout } from "./skills";
 import { TACTICAL_BONUS, rollArmorLevel, TACTICALS } from "./tactical";
 import { PETS } from "./pets";
 import { applySkinStats } from "./weaponSkins";
+import { applyAttachmentStats } from "./attachments";
 import { createArmorPickupMesh, createArmorPiece, applyArmor, emptyArmor, equipArmor, shouldPickupArmor, armorIconLabel, type ArmorState } from "./armor";
 import { createPingMarker, updatePings, nextPingKind, pingKindAtIndex, type PingKind, type Ping } from "./ping";
 import { addDaySkybox, DAY_HORIZON, type Skybox } from "./skybox";
 import { createImpactFx, type ImpactFx } from "./impactFx";
 import { ARENA_MAPS, type MapId } from "./maps";
+import { type GameMode, type MatchType, rankPointsForMatch, rankTierFromPoints } from "./modes";
 import { OUTPOST_BARRIER, clampInsideBarrier } from "./mapBarrier";
 import { saveMatchResult, getLeaderboard } from "@/lib/arena.functions";
 import { initSfx, playSfx, playSfxStoppable, playSfxAt, playVictory, warmSfx, suspendSfx, resumeSfx, setSfxMuted, setSfxVolume, setWeatherAmbience, stopWeatherAmbience, playThunder } from "./sfx";
 import { createWeather, type Weather } from "./weather";
 import SettingsPanel from "./SettingsPanel";
+import TeamPanel, { type Teammate } from "./TeamPanel";
 import {
   AIM_ASSIST_STRENGTH,
   defaultSettings,
@@ -82,13 +85,38 @@ import {
   getWeaponRange,
   getWeaponFireInterval,
   getWeaponBehavior,
-  getMagazine,
+  getMagazine as getBaseMagazine,
   getReserveAmmo,
-  getReloadTime,
+  getReloadTime as getBaseReloadTime,
   isDeflectionMelee,
   type Weapon,
 } from "./weapons";
+import { getAttachment } from "./attachments";
 import { createSafeZone, updateSafeZone, damageOutsideZone, createSafeZoneVisual, type SafeZone } from "./safeZone";
+
+type AttachmentProfile = {
+  equippedSkins: Record<string, string>;
+  equippedAttachments: Record<string, string>;
+};
+
+function getEffectiveWeapon(weaponId: string, profile: AttachmentProfile | null | undefined): Weapon | null {
+  const base = getWeapon(weaponId);
+  if (!base) return null;
+  const skinned = applySkinStats(base, profile?.equippedSkins[weaponId]);
+  return applyAttachmentStats(skinned ?? undefined, profile?.equippedAttachments[weaponId] ?? null) ?? base;
+}
+
+function getMagazine(weaponId: string, profile: AttachmentProfile | null | undefined) {
+  return getEffectiveWeapon(weaponId, profile)?.magazine ?? getBaseMagazine(weaponId);
+}
+
+function getReloadTime(weaponId: string, profile: AttachmentProfile | null | undefined) {
+  const base = getBaseReloadTime(weaponId);
+  const attachment = getAttachment(profile?.equippedAttachments[weaponId] ?? null);
+  if (!attachment || attachment.stats.reloadSpeed == null) return base;
+  return Math.max(0.05, base * (1 + attachment.stats.reloadSpeed / 100));
+}
+import { defaultBackpack, scanFfCoinPickups, spawnFfCoins, disposeFfCoins, type Backpack, type BackpackLevel, type FfCoinPickup } from "./backpack";
 import {
   BOT_PROFILES,
   createBotBrain,
@@ -153,6 +181,7 @@ const MATCH_CONFIG = {
 
 type Fighter = {
   id: string;
+  name: string;
   team: Team;
   isHuman: boolean;
   group: THREE.Group | null;
@@ -175,6 +204,8 @@ type Fighter = {
   ai: BotBrain | null;
   /** equipped armor (vest + helmet) */
   armor: ArmorState;
+  /** carried backpack and FF coins */
+  backpack: Backpack;
 };
 
 type HudFighter = { id: string; team: Team; hp: number; alive: boolean; isHuman: boolean };
@@ -280,13 +311,17 @@ type ArenaProps = {
   onExit?: () => void;
   /** which map / mode to play */
   mapId?: MapId;
+  /** selected game mode */
+  gameMode?: GameMode;
+  /** ranked or casual */
+  matchType?: MatchType;
   /** persistent guest profile */
   profile?: PlayerProfile;
   /** called when match rewards update the profile */
   onProfileChange?: (p: PlayerProfile) => void;
 };
 
-export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", profile, onProfileChange }: ArenaProps = {}) {
+export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", gameMode = "loneWolf", matchType = "casual", profile, onProfileChange }: ArenaProps = {}) {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const mapIdRef = useRef<MapId>(mapId);
   mapIdRef.current = mapId;
@@ -360,6 +395,11 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
   const [fullscreen, setFullscreen] = useState(false);
   const [prone, setProne] = useState(false);
   const [kits, setKits] = useState(3);
+  const [ffCoinCount, setFfCoinCount] = useState(0);
+  const [backpackLevel, setBackpackLevel] = useState<BackpackLevel>(1);
+  const ffCoinsRef = useRef<FfCoinPickup[]>([]);
+  const [teammates, setTeammates] = useState<Teammate[]>([]);
+  const matchStartTimeRef = useRef<number>(0);
   /** fraction (0..1) left in the partially used medkit at the top of the stack */
   /** Energy Points: yellow reserve that trickles back into HP over time */
   const [ep, setEp] = useState(0);
@@ -857,11 +897,24 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
         })),
       );
       setScore({ ...scoreState });
-      if (human) {
-        setPlayerHp(Math.max(0, Math.round(human.hp)));
-        setPlayerRespawn(human.alive ? 0 : Math.ceil(human.respawnIn));
-        setArmor(human.armor);
-        armorRef.current = human.armor;
+      const currentHuman = human;
+      if (currentHuman) {
+        setPlayerHp(Math.max(0, Math.round(currentHuman.hp)));
+        setPlayerRespawn(currentHuman.alive ? 0 : Math.ceil(currentHuman.respawnIn));
+        setArmor(currentHuman.armor);
+        armorRef.current = currentHuman.armor;
+        setTeammates(
+          fighters
+            .filter((f) => f.team === currentHuman.team)
+            .map((f) => ({
+              id: f.id,
+              name: f.name,
+              hp: Math.max(0, f.hp),
+              maxHp: MAX_HP,
+              alive: f.alive,
+              isHuman: f.isHuman,
+            })),
+        );
       }
     };
 
@@ -1113,13 +1166,19 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
             .then((res) => setLeaderboard(res))
             .catch(() => {});
           if (profile && onProfileChange) {
+            const won = m.matchWinner === human?.team;
+            const survivalSeconds = (performance.now() - matchStartTimeRef.current) / 1000;
+            const rankPoints = matchType === "ranked" ? rankPointsForMatch(won, playerStats.kills, playerStats.deaths, survivalSeconds) : 0;
+            const newPoints = Math.max(0, (profile.rankPoints ?? 0) + rankPoints);
             const updated = applyMatchRewards(profile, {
-              won: m.matchWinner === human?.team,
+              won,
               kills: playerStats.kills,
               deaths: playerStats.deaths,
               headshots: playerStats.headshots,
               characterId: characterRef.current.id,
               bountyBonus,
+              rankPoints,
+              rankTier: rankTierFromPoints(newPoints).name,
             });
             onProfileChange(updated);
           }
@@ -1199,6 +1258,12 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
       else playSfxAt("death", victim.pos.distanceTo(walkPos), 0.6, (Math.random() - 0.5) * 0.08);
       pushKillFeed(killer, victim);
       trackStreak(victim, killer);
+      // Drop FF coins from eliminated fighters.
+      const bounds = activeMap.bounds;
+      if (bounds) {
+        const coins = spawnFfCoins(root, victim.isHuman ? 5 : 2, bounds, (x, z) => groundAt(x, z, victim.pos.y, 3));
+        ffCoinsRef.current.push(...coins);
+      }
       if (scoreState[killer.team] >= matchConfigRef.current.killsToWinRound) {
         endRound(killer.team);
       } else {
@@ -1325,6 +1390,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
       f.hp = MAX_HP;
       f.respawnIn = 0;
       f.cooldown = 0.8 + Math.random() * 1.2;
+      f.backpack.items = [];
       if (f.ai) {
         // fresh brain on respawn, and pick up any difficulty change mid-match
         const prof = settingsRef.current.botDifficulty;
@@ -1350,6 +1416,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
         grounded = true;
         yaw = Math.atan2(f.pos.x, f.pos.z);
         pitch = 0;
+        setBackpackLevel(f.backpack.level);
       }
       syncHud();
     };
@@ -1379,9 +1446,13 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
       setMatch(matchRef.current);
       setKillFeed([]);
       saveSentRef.current = false;
-      // clear lingering decoys between matches
+      matchStartTimeRef.current = performance.now();
+      // clear lingering decoys and FF coins between matches
       for (const d of decoys) decoyGroup.remove(d.root);
       decoys.length = 0;
+      disposeFfCoins(ffCoinsRef.current);
+      setFfCoinCount(0);
+      setBackpackLevel(1);
       // safe zone: starts covering the whole arena, then shrinks to a duel ring
       const mapW = boundsMaxX - boundsMinX;
       const mapD = boundsMaxZ - boundsMinZ;
@@ -1409,11 +1480,11 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
     const startReload = (weaponId: string) => {
       if (isReloadingRef.current) return;
       const cur = ammoRef.current[weaponId];
-      if (!cur || cur.mag >= getMagazine(weaponId) || cur.reserve <= 0) return;
+      if (!cur || cur.mag >= getMagazine(weaponId, profileRef.current) || cur.reserve <= 0) return;
       isReloadingRef.current = true;
       reloadingWeaponRef.current = weaponId;
       setIsReloading(true);
-      reloadTimerRef.current = getReloadTime(weaponId);
+      reloadTimerRef.current = getReloadTime(weaponId, profileRef.current);
       reloadLeftRef.current = reloadTimerRef.current;
       setReloadLeft(reloadTimerRef.current);
       const mode = getWeaponBehavior(weaponId).mode;
@@ -1434,7 +1505,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
         setReloadLeft(0);
         return;
       }
-      const mag = getMagazine(weaponBeingReloaded);
+      const mag = getMagazine(weaponBeingReloaded, profileRef.current);
       const need = mag - cur.mag;
       const take = Math.min(need, cur.reserve);
       const next = { ...cur, mag: cur.mag + take, reserve: cur.reserve - take };
@@ -1661,7 +1732,8 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
       if (weaponCooldownRef.current > 0) return false;
 
       const weaponId = weaponRef.current;
-      const w = applySkinStats(getWeapon(weaponId) ?? undefined, profileRef.current?.equippedSkins[weaponId]);
+      const skinned = applySkinStats(getWeapon(weaponId) ?? undefined, profileRef.current?.equippedSkins[weaponId]);
+      const w = applyAttachmentStats(skinned ?? undefined, profileRef.current?.equippedAttachments[weaponId] ?? null);
       if (!w) return false;
       const behavior = getWeaponBehavior(weaponId);
       const weaponName = w.name;
@@ -1704,7 +1776,8 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
       applySpread(dir, behavior.spread * (adsRef.current ? 0.35 : 1));
 
       // now kick the view up for the *next* shot
-      const recoilScale = Math.max(0.5, 1.1 - w.fireRate / 200) * behavior.recoil * activeEffects().recoil;
+      const attachmentRecoil = 1 + (getAttachment(profileRef.current?.equippedAttachments[weaponId] ?? null)?.stats.recoil ?? 0) / 100;
+      const recoilScale = Math.max(0.3, 1.1 - w.fireRate / 200) * behavior.recoil * activeEffects().recoil * attachmentRecoil;
       recoilRef.current = Math.min(recoilRef.current + RECOIL_PITCH * recoilScale, 0.32);
       recoilYawRef.current += (Math.random() - 0.5) * 0.035 * recoilScale;
       shakeRef.current = 0.12;
@@ -2453,7 +2526,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
         const id = weaponRef.current;
         const cur = ammoRef.current[id];
         if (cur) {
-          const mag = getMagazine(id);
+          const mag = getMagazine(id, profileRef.current);
           const need = Math.min(mag - cur.mag, cur.reserve);
           if (need > 0) {
             setAmmo((prev) => {
@@ -3052,6 +3125,9 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
                     ),
                 };
           const id = `${team.toUpperCase()}_${index + 1}`;
+          const name = isHuman
+            ? profileRef.current?.name || "YOU"
+            : `BOT ${team.toUpperCase()}${index + 1}`;
           const weapon = isHuman ? "deagle" : team === "blue" ? "ak47" : index === 0 ? "m4a1" : "ump";
           const rawSidearm = slots[2];
           const sidearm: string = (isHuman
@@ -3063,6 +3139,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
               : "knife") as string;
           const f: Fighter = {
             id,
+            name,
             team,
             isHuman,
             group: null,
@@ -3087,6 +3164,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
                   })()),
                 ),
             armor: emptyArmor(),
+            backpack: defaultBackpack(isHuman && profileRef.current?.loadout.tactical === "legPockets" ? 2 : 1),
           };
           // personal spawn effect, sitting on this fighter's own spot
           const fx = createSpawnFx(team === "blue" ? "water" : "fire", home.top, initialQuality);
@@ -3533,6 +3611,14 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
       }
       tickMushrooms(dt);
       tickArmorPickups(dt);
+      // FF coins: auto-pickup near the player
+      if (human && human.alive && ffCoinsRef.current.length > 0) {
+        const collected = scanFfCoinPickups(ffCoinsRef.current, human.pos, human.backpack, now);
+        if (collected > 0) {
+          setFfCoinCount(human.backpack.coins);
+          playSfx("equip", 0.5, 1.1);
+        }
+      }
       // pings: fade and animate
       updatePings(pings, dt);
       // decoys: spin, bark fake shots, expire
@@ -4092,7 +4178,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
         })),
         player: human ? { x: walkPos.x, z: walkPos.z, yaw } : null,
         decoys: decoys.map((d) => ({ x: d.root.position.x, z: d.root.position.z, team: d.team, ttl: d.ttl })),
-        pings: pings.map((p) => ({ x: p.pos.x, z: p.pos.z, kind: p.kind, ttl: p.ttl })),
+        pings: pings.map((p) => ({ x: p.pos.x, z: p.pos.z, kind: p.kind, ttl: p.life })),
       };
 
       if (damageFlashRef.current > 0) {
@@ -4180,6 +4266,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
       scene.remove(decoyGroup);
       for (const d of decoys) decoyGroup.remove(d.root);
       decoys.length = 0;
+      disposeFfCoins(ffCoinsRef.current);
       smokeField.clear();
       skybox?.dispose();
       skybox = null;
@@ -4323,7 +4410,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
     setOwned((o) => [...o, w.id]);
     setAmmo((prev) => ({
       ...prev,
-      [w.id]: { mag: getMagazine(w.id), reserve: getReserveAmmo(w.id) },
+      [w.id]: { mag: getMagazine(w.id, profileRef.current), reserve: getReserveAmmo(w.id) },
     }));
     equipWeapon(w);
   };
@@ -4351,7 +4438,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
       if (is("reload") && !isReloadingRef.current) {
         const weaponId = weaponRef.current;
         const cur = ammoRef.current[weaponId];
-        if (cur && cur.mag < getMagazine(weaponId) && cur.reserve > 0) {
+        if (cur && cur.mag < getMagazine(weaponId, profileRef.current) && cur.reserve > 0) {
           startReloadRef.current(weaponId);
         }
       }
@@ -4565,6 +4652,11 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
             </div>
           )}
 
+          {/* squad status panel */}
+          {match.phase !== "warmup" && match.phase !== "matchEnd" && (
+            <TeamPanel teammates={teammates} scale={hudScale} opacity={settings.hudOpacity} />
+          )}
+
           {/* status strip right of the minimap: settings, companion, ping, spectators */}
           <div className="absolute left-[148px] top-3 z-10 flex items-center gap-3 text-white/70 sm:left-[156px] sm:top-4">
             <button
@@ -4712,6 +4804,12 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
               </div>
               <span className="text-[9px] uppercase tracking-widest text-white/45 tabular-nums">
                 {playerStatsHud.kills}K/{playerStatsHud.deaths}D
+              </span>
+              <span className="text-[9px] uppercase tracking-widest text-amber-300/80 tabular-nums">
+                FF {ffCoinCount}
+              </span>
+              <span className="text-[9px] uppercase tracking-widest text-white/45 tabular-nums">
+                BP{backpackLevel}
               </span>
             </div>
             {/* EP reserve — trickles into HP; inhalers (F) top it up */}
@@ -4954,7 +5052,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", pr
             const cur = ammo[activeId];
             const mag = cur?.mag ?? 0;
             const reserve = cur?.reserve ?? 0;
-            const magSize = getMagazine(activeId);
+            const magSize = getMagazine(activeId, profileRef.current);
             const hasAmmo = magSize > 0;
             const empty = hasAmmo && mag === 0;
             const low = hasAmmo && mag > 0 && mag <= Math.max(1, Math.ceil(magSize * 0.25));

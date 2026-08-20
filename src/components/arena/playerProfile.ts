@@ -8,7 +8,7 @@
 
 import { PASSIVE_SKILLS, combinePassives, defaultLoadout, loadLoadout, type Loadout, type PassiveSkillId } from "./skills";
 import { TACTICAL_IDS, type TacticalId } from "./tactical";
-import { PETS, defaultPet, loadPet, type PetId } from "./pets";
+import { PETS, defaultPet, loadPet, starterPets, type PetId } from "./pets";
 import { defaultVault, loadVault } from "./vault";
 
 export type PlayerProfile = {
@@ -35,6 +35,10 @@ export type PlayerProfile = {
   booyahPassXp: number;
   /** claimed Booyah Pass reward tiers */
   booyahPassClaimed: number[];
+  /** ranked ladder points */
+  rankPoints: number;
+  /** current ranked tier name */
+  rankTier: string;
   /** matches played with each character for Character Link unlocks */
   characterProgress: Record<string, number>;
   /** active loadout: one active power + up to three passive skills */
@@ -47,6 +51,10 @@ export type PlayerProfile = {
   ownedSkins: string[];
   /** weaponId -> equipped skin id */
   equippedSkins: Record<string, string>;
+  /** owned weapon attachment ids */
+  ownedAttachments: string[];
+  /** weaponId -> equipped attachment id */
+  equippedAttachments: Record<string, string>;
   /** owned vault item ids (skins, passives, pets) */
   vault: string[];
 };
@@ -93,12 +101,16 @@ export function defaultProfile(): PlayerProfile {
     booyahPassTier: 0,
     booyahPassXp: 0,
     booyahPassClaimed: [],
+    rankPoints: 0,
+    rankTier: "Bronze V",
     characterProgress: {},
     loadout: defaultLoadout("coldsnap"),
     pet: defaultPet(),
     ownedPets: starterPets(),
     ownedSkins: [],
     equippedSkins: {},
+    ownedAttachments: [],
+    equippedAttachments: {},
     vault: defaultVault(),
   };
 }
@@ -131,12 +143,16 @@ export function loadProfile(): PlayerProfile {
       booyahPassTier: num(saved.booyahPassTier, 0),
       booyahPassXp: num(saved.booyahPassXp, 0),
       booyahPassClaimed: Array.isArray(saved.booyahPassClaimed) ? saved.booyahPassClaimed.map((n) => num(n, 0)).filter((n) => n > 0) : [],
+      rankPoints: num(saved.rankPoints, 0),
+      rankTier: typeof saved.rankTier === "string" && saved.rankTier ? saved.rankTier : "Bronze V",
       characterProgress: isRecordOfNumbers(saved.characterProgress) ? saved.characterProgress : {},
       loadout: saved.loadout && typeof saved.loadout === "object" ? loadLoadoutFrom(saved.loadout) : base.loadout,
       pet: typeof saved.pet === "string" && saved.pet ? loadPetFrom(saved.pet) : base.pet,
       ownedPets: loadOwnedPets(),
       ownedSkins: Array.isArray(saved.ownedSkins) ? saved.ownedSkins.filter((s): s is string => typeof s === "string") : [],
       equippedSkins: isRecordOfStrings(saved.equippedSkins) ? saved.equippedSkins : {},
+      ownedAttachments: Array.isArray(saved.ownedAttachments) ? saved.ownedAttachments.filter((s): s is string => typeof s === "string") : [],
+      equippedAttachments: isRecordOfStrings(saved.equippedAttachments) ? saved.equippedAttachments : {},
       vault: Array.isArray(saved.vault) ? saved.vault.filter((s): s is string => typeof s === "string") : defaultVault(),
     };
   } catch {
@@ -215,6 +231,8 @@ export function applyMatchRewards(
     headshots,
     characterId,
     bountyBonus,
+    rankPoints,
+    rankTier,
   }: {
     won: boolean;
     kills: number;
@@ -222,6 +240,8 @@ export function applyMatchRewards(
     headshots: number;
     characterId?: string;
     bountyBonus?: number;
+    rankPoints?: number;
+    rankTier?: string;
   }
 ): PlayerProfile {
   const next = { ...p };
@@ -244,6 +264,14 @@ export function applyMatchRewards(
   while (next.booyahPassXp >= 1000) {
     next.booyahPassXp -= 1000;
     next.booyahPassTier += 1;
+  }
+
+  // Ranked ladder update.
+  if (typeof rankPoints === "number") {
+    next.rankPoints = Math.max(0, next.rankPoints + rankPoints);
+  }
+  if (rankTier) {
+    next.rankTier = rankTier;
   }
 
   // Character Link progress: +1 match toward the operative used this game.

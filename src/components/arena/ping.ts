@@ -78,7 +78,7 @@ export function createPingMarker(kind: PingKind, pos: THREE.Vector3, team: "blue
 
 export function updatePings(pings: Ping[], dt: number) {
   for (let i = pings.length - 1; i >= 0; i--) {
-    const p = pings[i];
+    const p = pings[i]!;
     p.life -= dt;
     const t = performance.now() * 0.004;
     p.mesh.position.y = Math.sin(t + p.pos.x) * 0.08;
@@ -99,12 +99,12 @@ export function updatePings(pings: Ping[], dt: number) {
 
 export function pingKindAtIndex(index: number): PingKind {
   const kinds: PingKind[] = ["enemy", "go", "loot", "watch"];
-  return kinds[index % kinds.length];
+  return kinds[index % kinds.length]!;
 }
 
 export function nextPingKind(current: PingKind): PingKind {
   const kinds: PingKind[] = ["enemy", "go", "loot", "watch"];
-  return kinds[(kinds.indexOf(current) + 1) % kinds.length];
+  return kinds[(kinds.indexOf(current) + 1) % kinds.length]!;
 }
 
 export { PING_COLORS, PING_LABELS };

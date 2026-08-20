@@ -21,10 +21,11 @@ Last full audit: 2026-08-19.
 - 3D-lit lobby dashboard with Play, Settings, Character, Map, Profile and Store entries.
 - Character picker: 6 operatives, each with tagline, colour, accent and a signature power; live 3D capsule preview.
 - Map select: choose the arena before deploying.
+- Mode select: choose Lone Wolf, Clash Squad or Battle Royale; toggle Ranked vs Casual.
 - Weapon shop / armory: buy and equip weapons with credits; sell-all refund.
 - Weapon slots: two heavy slots + sidearm, with slot switching and drop-weapon.
 - Selected character persists in localStorage.
-- Loadout panel: one active power + up to three passive skills + one tactical item; tactical choices include Bounty Token (bonus gold on first kill) and Armor Crate (spawn with random vest + helmet).
+- Loadout panel: one active power + up to three passive skills + one tactical item; tactical choices include Bounty Token (bonus gold on first kill), Armor Crate (spawn with random vest + helmet) and Leg Pockets (start with backpack level 2).
 
 ## 2. Progression & identity
 - Guest login: persistent guest ID generated on first boot, stored in localStorage.
@@ -33,6 +34,7 @@ Last full audit: 2026-08-19.
 - Gold currency: earned from every match (base pay + win + kills + headshot bonus), persists across sessions.
 - Diamonds currency: premium currency stored in profile, awarded from Luck Royale and Booyah Pass rewards.
 - Match rewards: Lone Wolf Arena reports match results and applies gold/XP/character progress to the profile.
+- Ranked ladder: Ranked matches award rank points; tier updates in profile (Bronze → Heroic).
 - Luck Royale store: gacha-style spinning wheel in the lobby that spends Gold for random gold, diamond, XP or bonus spins.
 - Booyah Pass tier tracking with claimable rewards: each tier grants gold and/or diamonds; UI lists claimable tiers and one-tap claim.
 - Character Link system: characters beyond the starter are unlocked by playing a set number of matches with them; picker shows lock status and remaining matches.
@@ -64,6 +66,7 @@ Last full audit: 2026-08-19.
 - Damage profiles: range falloff, headshot multiplier, per-zone damage.
 - Treatment Rifle and Treatment Sniper: shooting teammates restores HP (green tracer + popup), shooting enemies still deals reduced damage.
 - Bullet spread and recoil applied per shot, plus tracers.
+- Weapon attachments: muzzle, silencer, foregrip, magazine, stock and scope slots that modify damage, range, magazine size, reload speed and recoil; owned attachments persist and apply during live fire.
 
 ## 6. Combat
 - Hitscan shooting with raycast against fighters, walls and level geometry.
@@ -84,6 +87,8 @@ Last full audit: 2026-08-19.
 - Throwables: frag (5s fuse, 300 dmg), flashbang (1.7s fuse, 16 m blind — whiteout for the player, bots hold fire ~3s), smoke (billboard cloud that blocks bot line of sight for 9s) and decoy (fake gunshots, minimap bait, draws bots). Cycle with `G` on desktop or the chip above the grenade button on touch.
 - Melee deflection: Pan, Titanium Bat and Katana block ~35% of shots that hit the back; available in the shop and on some bots.
 - Armor system (vests + helmets): level 1-4 pickups reduce body/headshot damage with durability that degrades as it absorbs hits; rarity-colored 3D world pickups and HUD durability strip.
+- Backpack system: level 1-3 bags with capacity/level shown in HUD; Leg Pockets tactical starts the player at backpack level 2.
+- FF Coins: yellow ground tokens dropped by eliminated fighters and auto-picked up near the player; count shown in HUD.
 
 ## 7. Movement & controls
 - Desktop: WASD move, jump, sprint, crouch, prone, reload, gloo wall, bomb, medkit, character power, shop — all rebindable.
@@ -111,6 +116,7 @@ Last full audit: 2026-08-19.
 - Health, ammo, weapon slots, ability cooldown ring, gloo/medkit/bomb counters.
 - Minimap (`Minimap.tsx`) with teammates, enemies and geometry.
 - Kill feed, streak banner, round/score header, personal K/D readout.
+- Squad panel: teammate name, HP bar, alive/dead count (shown outside warmup/match end).
 - Crosshair engine: cross / dot / circle / none, custom colour, size, thickness, opacity, dynamic bloom, centre dot.
 - HUD opacity, HUD scale and per-element toggles.
 

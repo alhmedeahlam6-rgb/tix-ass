@@ -177,6 +177,7 @@ export default function TouchControls({
   onThrowBomb,
   walls,
   onThrowWall,
+  onPing,
   slots,
   onDropWeapon,
   scale = 1,

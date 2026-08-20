@@ -15,8 +15,9 @@ import { defaultCharacter, loadCharacter, saveCharacter, type ArenaCharacter } f
 import { defaultSettings, loadSettings, saveSettings, type ArenaSettings } from "./settings";
 import { arenaAssets, preloadAll } from "./preload";
 import { initKeyboardLayout } from "./keyboardLayout";
-import MapSelect from "./MapSelect";
+import ModeSelect from "./ModeSelect";
 import { type MapId } from "./maps";
+import { DEFAULT_MODE, DEFAULT_MATCH_TYPE, type GameMode, type MatchType } from "./modes";
 import { loadProfile, saveProfile, levelFromProfile, type PlayerProfile } from "./playerProfile";
 import { saveLoadout } from "./skills";
 import { savePet } from "./pets";
@@ -70,7 +71,9 @@ export default function GameShell() {
   const [arenaReady, setArenaReady] = useState(false);
   const [tip, setTip] = useState(0);
   const [mapId, setMapId] = useState<MapId>("frostline");
-  const [mapOpen, setMapOpen] = useState(false);
+  const [gameMode, setGameMode] = useState<GameMode>(DEFAULT_MODE);
+  const [matchType, setMatchType] = useState<MatchType>(DEFAULT_MATCH_TYPE);
+  const [modeOpen, setModeOpen] = useState(false);
   const [profile, setProfile] = useState<PlayerProfile>(() => loadProfile());
   const [profileOpen, setProfileOpen] = useState(false);
   const [storeOpen, setStoreOpen] = useState(false);
@@ -109,9 +112,11 @@ export default function GameShell() {
     return () => window.clearTimeout(id);
   }, [phase, arenaReady]);
 
-  const deploy = useCallback((id: MapId) => {
+  const deploy = useCallback((mode: GameMode, type: MatchType, id: MapId) => {
+    setGameMode(mode);
+    setMatchType(type);
     setMapId(id);
-    setMapOpen(false);
+    setModeOpen(false);
     deployStart.current = performance.now();
     setArenaReady(false);
     setPhase("deploy");
@@ -130,7 +135,7 @@ export default function GameShell() {
       {mountArena && (
         <div className={phase === "play" ? "h-full w-full" : "h-full w-full opacity-0"}>
           <Suspense fallback={null}>
-            <LoneWolfArena key={deployStart.current} mapId={mapId} profile={profile} onProfileChange={setProfile} onReady={() => setArenaReady(true)} onExit={backToLobby} />
+            <LoneWolfArena key={deployStart.current} mapId={mapId} gameMode={gameMode} matchType={matchType} profile={profile} onProfileChange={setProfile} onReady={() => setArenaReady(true)} onExit={backToLobby} />
           </Suspense>
         </div>
       )}
@@ -330,7 +335,7 @@ export default function GameShell() {
               </button>
               <button
                 type="button"
-                onClick={() => setMapOpen(true)}
+                onClick={() => setModeOpen(true)}
                 className="group flex h-14 items-center gap-4 rounded-2xl bg-[var(--hud-accent)] pl-8 pr-6 text-[var(--hud-accent-foreground)] shadow-[var(--shadow-hud)] transition hover:brightness-110 active:scale-95"
               >
                 <span className="text-sm font-black uppercase tracking-[0.4em]">Play</span>
@@ -374,8 +379,8 @@ export default function GameShell() {
         </div>
       )}
 
-      {mapOpen && phase === "lobby" && (
-        <MapSelect onSelect={deploy} onClose={() => setMapOpen(false)} />
+      {modeOpen && phase === "lobby" && (
+        <ModeSelect onDeploy={deploy} onClose={() => setModeOpen(false)} />
       )}
 
       {settingsOpen && (

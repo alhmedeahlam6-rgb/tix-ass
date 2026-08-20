@@ -27,6 +27,11 @@
 - X Booyah Pass rewards: claimable tiers for gold/diamonds, stored in profile — files: `src/components/arena/booyahPass.ts`, `src/components/arena/playerProfile.ts`, `src/components/arena/ProfileCard.tsx`
 - X Armory weapon skin stat effects in the arena: skin stat deltas are applied to the player's current weapon in LoneWolfArena shoot — files: `src/components/arena/weaponSkins.ts`, `src/components/arena/LoneWolfArena.tsx`, `src/components/arena/GameShell.tsx`
 - X Store expansion: Crates tab that adds weapon skins to vault/armory, Currency tab for mock diamond packs, and Diamonds shown in lobby/profile — files: `src/components/arena/StorePanel.tsx`, `src/components/arena/GameShell.tsx`, `src/components/arena/weaponSkins.ts`
+- X Mode selection + Ranked/Casual toggle — files: `src/components/arena/ModeSelect.tsx`, `src/components/arena/modes.ts`, `src/components/arena/GameShell.tsx`
+- X Team HUD panel with squad HP/alive status — files: `src/components/arena/TeamPanel.tsx`, `src/components/arena/LoneWolfArena.tsx`
+- X Backpack system + FF Coins in-match economy — files: `src/components/arena/backpack.ts`, `src/components/arena/LoneWolfArena.tsx`
+- X Leg Pockets tactical grants starting backpack level 2 — files: `src/components/arena/LoneWolfArena.tsx`
+- X Weapon attachment system: own, equip, and apply muzzle/silencer/foregrip/magazine/stock/scope stat modifiers in live matches — files: `src/components/arena/attachments.ts`, `src/components/arena/ArmoryPanel.tsx`, `src/components/arena/LoneWolfArena.tsx`, `src/components/arena/playerProfile.ts`
 
 ---
 
@@ -53,15 +58,15 @@
 - Team Voice Chat: In-lobby microphone and speaker toggles.
 
 ## Phase 2: Pre-Match & Loadout
-- Mode Selection: Choosing between BR, CS (Clash Squad), Lone Wolf, or Custom Rooms.
-- Ranked vs. Casual: Toggle for playing for rank points or just for fun.
+- X Mode Selection: Choosing between BR, CS (Clash Squad), Lone Wolf, or Custom Rooms.
+- X Ranked vs. Casual: Toggle for playing for rank points or just for fun.
 - Map Download Center: A UI to manually download specific maps to save phone storage.
 - Loadout - Scanner: Reveals players in the plane and nearby when parachuting.
 - Loadout - Bonfire: Placed on the ground in-game to heal HP and EP over time.
 - Loadout - Airdrop: Calls in a personal loot crate during the match.
 - X Loadout - Bounty Token: Gives extra loot when you get your first kill.
 - X Loadout - Armor Crate: Start the match with a random level helmet/vest.
-- Loadout - Leg Pockets: Increases starting backpack capacity.
+- X Loadout - Leg Pockets: Increases starting backpack capacity.
 - Spawn Island: The 60-second waiting lobby where players run around before the plane.
 - Spawn Island Interactions: Throwing snowballs/fireworks at other players.
 
@@ -91,23 +96,23 @@
 - X Ping/Marker System: Double tap to mark enemies, single tap to mark loot or locations.
 - Minimap: Top left map showing safe zones, your team, and red dots for unsilenced shots.
 - Kill Feed: Text scrolling showing who killed who and with what weapon.
-- Team UI: Teammate health bars, names, knocked/dead state.
+- X Team UI: Teammate health bars, names, knocked/dead state.
 - Custom HUD Settings: Resize, move, and change transparency of every button.
 
 ## Phase 5: Looting & Inventory
 - Auto-Pickup: Automatically sucks loot into your inventory by walking over it.
 - Auto-Pickup Priority: Settings for Medkits, Ammo, or Attachments first.
-- Backpack System: Level 1, 2, and 3 bags that increase carry capacity.
+- X Backpack System: Level 1, 2, and 3 bags that increase carry capacity.
 - X Armor System (Vests): Level 1 to 4 vests that reduce body damage.
 - X Armor System (Helmets): Level 1 to 4 helmets that reduce headshot damage.
 - Armor Attachments: Thickener or HP booster attachments for vests.
-- Weapon Attachments - Muzzle: Increases damage range.
-- Weapon Attachments - Silencer: Hides your shots from the minimap.
-- Weapon Attachments - Foregrip: Reduces bullet spread and recoil.
-- Weapon Attachments - Magazine: Increases bullet capacity and reload speed.
-- Weapon Attachments - Stock: Increases movement speed while aiming.
-- Weapon Attachments - Scopes: 2x, 4x, and Thermal scopes.
-- FF Coins: Yellow tokens looted off the ground used as in-match currency.
+- X Weapon Attachments - Muzzle: Increases damage range.
+- X Weapon Attachments - Silencer: Hides your shots from the minimap.
+- X Weapon Attachments - Foregrip: Reduces bullet spread and recoil.
+- X Weapon Attachments - Magazine: Increases bullet capacity and reload speed.
+- X Weapon Attachments - Stock: Increases movement speed while aiming.
+- X Weapon Attachments - Scopes: 2x, 4x, and Thermal scopes.
+- X FF Coins: Yellow tokens looted off the ground used as in-match currency.
 
 ## Phase 6: Combat & Survival Mechanics
 - Aim Assist (Default): Crosshair magnetically locks onto the enemy's chest when firing.
