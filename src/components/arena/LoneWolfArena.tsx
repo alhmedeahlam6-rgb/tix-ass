@@ -1142,7 +1142,8 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
             .catch(() => {});
           if (profile && onProfileChange) {
             const won = m.matchWinner === human?.team;
-            const rankPoints = matchType === "ranked" ? rankPointsForMatch(won, playerStats.kills, playerStats.deaths) : 0;
+            const survivalSeconds = (performance.now() - matchStartTimeRef.current) / 1000;
+            const rankPoints = matchType === "ranked" ? rankPointsForMatch(won, playerStats.kills, playerStats.deaths, survivalSeconds) : 0;
             const updated = applyMatchRewards(profile, {
               won,
               kills: playerStats.kills,
