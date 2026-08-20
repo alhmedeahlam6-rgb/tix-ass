@@ -91,7 +91,31 @@ import {
   isDeflectionMelee,
   type Weapon,
 } from "./weapons";
+import { getAttachment } from "./attachments";
 import { createSafeZone, updateSafeZone, damageOutsideZone, createSafeZoneVisual, type SafeZone } from "./safeZone";
+
+type AttachmentProfile = {
+  equippedSkins: Record<string, string>;
+  equippedAttachments: Record<string, string>;
+};
+
+function getEffectiveWeapon(weaponId: string, profile: AttachmentProfile | null): Weapon | null {
+  const base = getWeapon(weaponId);
+  if (!base) return null;
+  const skinned = applySkinStats(base, profile?.equippedSkins[weaponId]);
+  return applyAttachmentStats(skinned ?? undefined, profile?.equippedAttachments[weaponId] ?? null) ?? base;
+}
+
+function getMagazine(weaponId: string, profile: AttachmentProfile | null) {
+  return getEffectiveWeapon(weaponId, profile)?.magazine ?? getBaseMagazine(weaponId);
+}
+
+function getReloadTime(weaponId: string, profile: AttachmentProfile | null) {
+  const base = getBaseReloadTime(weaponId);
+  const attachment = getAttachment(profile?.equippedAttachments[weaponId] ?? null);
+  if (!attachment || attachment.stats.reloadSpeed == null) return base;
+  return Math.max(0.05, base * (1 + attachment.stats.reloadSpeed / 100));
+}
 import { defaultBackpack, scanFfCoinPickups, spawnFfCoins, disposeFfCoins, type Backpack, type BackpackLevel, type FfCoinPickup } from "./backpack";
 import {
   BOT_PROFILES,
