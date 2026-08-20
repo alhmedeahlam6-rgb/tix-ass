@@ -335,7 +335,7 @@ export default function GameShell() {
               </button>
               <button
                 type="button"
-                onClick={() => setMapOpen(true)}
+                onClick={() => setModeOpen(true)}
                 className="group flex h-14 items-center gap-4 rounded-2xl bg-[var(--hud-accent)] pl-8 pr-6 text-[var(--hud-accent-foreground)] shadow-[var(--shadow-hud)] transition hover:brightness-110 active:scale-95"
               >
                 <span className="text-sm font-black uppercase tracking-[0.4em]">Play</span>
