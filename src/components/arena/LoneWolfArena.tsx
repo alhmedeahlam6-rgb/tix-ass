@@ -1210,6 +1210,12 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
       else playSfxAt("death", victim.pos.distanceTo(walkPos), 0.6, (Math.random() - 0.5) * 0.08);
       pushKillFeed(killer, victim);
       trackStreak(victim, killer);
+      // Drop FF coins from eliminated fighters.
+      const bounds = activeMap.bounds;
+      if (bounds) {
+        const coins = spawnFfCoins(root, victim.isHuman ? 5 : 2, bounds, (x, z) => groundAt(x, z, victim.pos.y, 3));
+        ffCoinsRef.current.push(...coins);
+      }
       if (scoreState[killer.team] >= matchConfigRef.current.killsToWinRound) {
         endRound(killer.team);
       } else {
