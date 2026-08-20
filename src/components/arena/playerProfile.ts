@@ -97,6 +97,8 @@ export function defaultProfile(): PlayerProfile {
     booyahPassTier: 0,
     booyahPassXp: 0,
     booyahPassClaimed: [],
+    rankPoints: 0,
+    rankTier: "Bronze V",
     characterProgress: {},
     loadout: defaultLoadout("coldsnap"),
     pet: defaultPet(),
