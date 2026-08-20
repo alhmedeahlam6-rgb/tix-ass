@@ -4745,6 +4745,12 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
               <span className="text-[9px] uppercase tracking-widest text-white/45 tabular-nums">
                 {playerStatsHud.kills}K/{playerStatsHud.deaths}D
               </span>
+              <span className="text-[9px] uppercase tracking-widest text-amber-300/80 tabular-nums">
+                FF {ffCoinCount}
+              </span>
+              <span className="text-[9px] uppercase tracking-widest text-white/45 tabular-nums">
+                BP{backpackLevel}
+              </span>
             </div>
             {/* EP reserve — trickles into HP; inhalers (F) top it up */}
             <div className="mt-1 flex items-center gap-2">
