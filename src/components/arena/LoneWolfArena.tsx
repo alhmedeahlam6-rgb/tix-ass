@@ -1396,9 +1396,12 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
       setMatch(matchRef.current);
       setKillFeed([]);
       saveSentRef.current = false;
-      // clear lingering decoys between matches
+      // clear lingering decoys and FF coins between matches
       for (const d of decoys) decoyGroup.remove(d.root);
       decoys.length = 0;
+      disposeFfCoins(ffCoinsRef.current);
+      setFfCoinCount(0);
+      setBackpackLevel(1);
       // safe zone: starts covering the whole arena, then shrinks to a duel ring
       const mapW = boundsMaxX - boundsMinX;
       const mapD = boundsMaxZ - boundsMinZ;
