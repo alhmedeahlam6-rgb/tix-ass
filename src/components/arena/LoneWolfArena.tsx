@@ -4206,6 +4206,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
       scene.remove(decoyGroup);
       for (const d of decoys) decoyGroup.remove(d.root);
       decoys.length = 0;
+      disposeFfCoins(ffCoinsRef.current);
       smokeField.clear();
       skybox?.dispose();
       skybox = null;
