@@ -1776,7 +1776,8 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
       applySpread(dir, behavior.spread * (adsRef.current ? 0.35 : 1));
 
       // now kick the view up for the *next* shot
-      const recoilScale = Math.max(0.5, 1.1 - w.fireRate / 200) * behavior.recoil * activeEffects().recoil;
+      const attachmentRecoil = 1 + (getAttachment(profileRef.current?.equippedAttachments[weaponId] ?? null)?.stats.recoil ?? 0) / 100;
+      const recoilScale = Math.max(0.3, 1.1 - w.fireRate / 200) * behavior.recoil * activeEffects().recoil * attachmentRecoil;
       recoilRef.current = Math.min(recoilRef.current + RECOIL_PITCH * recoilScale, 0.32);
       recoilYawRef.current += (Math.random() - 0.5) * 0.035 * recoilScale;
       shakeRef.current = 0.12;
