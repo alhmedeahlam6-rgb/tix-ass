@@ -1144,6 +1144,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
             const won = m.matchWinner === human?.team;
             const survivalSeconds = (performance.now() - matchStartTimeRef.current) / 1000;
             const rankPoints = matchType === "ranked" ? rankPointsForMatch(won, playerStats.kills, playerStats.deaths, survivalSeconds) : 0;
+            const newPoints = Math.max(0, (profile.rankPoints ?? 0) + rankPoints);
             const updated = applyMatchRewards(profile, {
               won,
               kills: playerStats.kills,
@@ -1152,6 +1153,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
               characterId: characterRef.current.id,
               bountyBonus,
               rankPoints,
+              rankTier: rankTierFromPoints(newPoints).name,
             });
             onProfileChange(updated);
           }
