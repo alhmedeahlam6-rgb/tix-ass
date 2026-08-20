@@ -53,7 +53,7 @@ export const MODES: Record<GameMode, ModeInfo> = {
   },
 };
 
-export const MODE_IDS = Object.keys(MODES) as GameMode[];
+export const MODE_IDS: GameMode[] = Object.keys(MODES) as GameMode[];
 
 export const MATCH_TYPES: Record<MatchType, { name: string; blurb: string }> = {
   casual: { name: "Casual", blurb: "No rank pressure. Practice and earn gold." },
