@@ -3089,6 +3089,9 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
                     ),
                 };
           const id = `${team.toUpperCase()}_${index + 1}`;
+          const name = isHuman
+            ? profileRef.current?.name || "YOU"
+            : `BOT ${team.toUpperCase()}${index + 1}`;
           const weapon = isHuman ? "deagle" : team === "blue" ? "ak47" : index === 0 ? "m4a1" : "ump";
           const rawSidearm = slots[2];
           const sidearm: string = (isHuman
