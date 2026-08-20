@@ -379,8 +379,8 @@ export default function GameShell() {
         </div>
       )}
 
-      {mapOpen && phase === "lobby" && (
-        <MapSelect onSelect={deploy} onClose={() => setMapOpen(false)} />
+      {modeOpen && phase === "lobby" && (
+        <ModeSelect onDeploy={deploy} onClose={() => setModeOpen(false)} />
       )}
 
       {settingsOpen && (
