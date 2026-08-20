@@ -4617,6 +4617,11 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
             </div>
           )}
 
+          {/* squad status panel */}
+          {match.phase !== "warmup" && match.phase !== "matchEnd" && (
+            <TeamPanel teammates={teammates} scale={hudScale} opacity={settings.hudOpacity} />
+          )}
+
           {/* status strip right of the minimap: settings, companion, ping, spectators */}
           <div className="absolute left-[148px] top-3 z-10 flex items-center gap-3 text-white/70 sm:left-[156px] sm:top-4">
             <button
