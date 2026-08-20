@@ -27,6 +27,10 @@
 - X Booyah Pass rewards: claimable tiers for gold/diamonds, stored in profile — files: `src/components/arena/booyahPass.ts`, `src/components/arena/playerProfile.ts`, `src/components/arena/ProfileCard.tsx`
 - X Armory weapon skin stat effects in the arena: skin stat deltas are applied to the player's current weapon in LoneWolfArena shoot — files: `src/components/arena/weaponSkins.ts`, `src/components/arena/LoneWolfArena.tsx`, `src/components/arena/GameShell.tsx`
 - X Store expansion: Crates tab that adds weapon skins to vault/armory, Currency tab for mock diamond packs, and Diamonds shown in lobby/profile — files: `src/components/arena/StorePanel.tsx`, `src/components/arena/GameShell.tsx`, `src/components/arena/weaponSkins.ts`
+- X Mode selection + Ranked/Casual toggle — files: `src/components/arena/ModeSelect.tsx`, `src/components/arena/modes.ts`, `src/components/arena/GameShell.tsx`
+- X Team HUD panel with squad HP/alive status — files: `src/components/arena/TeamPanel.tsx`, `src/components/arena/LoneWolfArena.tsx`
+- X Backpack system + FF Coins in-match economy — files: `src/components/arena/backpack.ts`, `src/components/arena/LoneWolfArena.tsx`
+- X Leg Pockets tactical grants starting backpack level 2 — files: `src/components/arena/LoneWolfArena.tsx`
 
 ---
 
