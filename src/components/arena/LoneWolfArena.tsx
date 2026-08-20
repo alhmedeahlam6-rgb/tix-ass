@@ -3551,6 +3551,14 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
       }
       tickMushrooms(dt);
       tickArmorPickups(dt);
+      // FF coins: auto-pickup near the player
+      if (human && human.alive && ffCoinsRef.current.length > 0) {
+        const collected = scanFfCoinPickups(ffCoinsRef.current, human.pos, human.backpack, now);
+        if (collected > 0) {
+          setFfCoinCount(human.backpack.coins);
+          playSfx("equip", 0.5, 1.1);
+        }
+      }
       // pings: fade and animate
       updatePings(pings, dt);
       // decoys: spin, bark fake shots, expire
