@@ -4437,7 +4437,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
       if (is("reload") && !isReloadingRef.current) {
         const weaponId = weaponRef.current;
         const cur = ammoRef.current[weaponId];
-        if (cur && cur.mag < getMagazine(weaponId) && cur.reserve > 0) {
+        if (cur && cur.mag < getMagazine(weaponId, profileRef.current) && cur.reserve > 0) {
           startReloadRef.current(weaponId);
         }
       }
