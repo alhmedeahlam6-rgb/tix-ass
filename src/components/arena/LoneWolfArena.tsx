@@ -1505,7 +1505,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
         setReloadLeft(0);
         return;
       }
-      const mag = getMagazine(weaponBeingReloaded);
+      const mag = getMagazine(weaponBeingReloaded, profileRef.current);
       const need = mag - cur.mag;
       const take = Math.min(need, cur.reserve);
       const next = { ...cur, mag: cur.mag + take, reserve: cur.reserve - take };
