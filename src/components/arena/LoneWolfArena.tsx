@@ -875,6 +875,18 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
         setPlayerRespawn(human.alive ? 0 : Math.ceil(human.respawnIn));
         setArmor(human.armor);
         armorRef.current = human.armor;
+        setTeammates(
+          fighters
+            .filter((f) => f.team === human.team)
+            .map((f) => ({
+              id: f.id,
+              name: f.name,
+              hp: Math.max(0, f.hp),
+              maxHp: MAX_HP,
+              alive: f.alive,
+              isHuman: f.isHuman,
+            })),
+        );
       }
     };
 
