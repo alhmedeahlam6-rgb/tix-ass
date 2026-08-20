@@ -112,9 +112,11 @@ export default function GameShell() {
     return () => window.clearTimeout(id);
   }, [phase, arenaReady]);
 
-  const deploy = useCallback((id: MapId) => {
+  const deploy = useCallback((id: MapId, mode: GameMode, type: MatchType) => {
     setMapId(id);
-    setMapOpen(false);
+    setGameMode(mode);
+    setMatchType(type);
+    setModeOpen(false);
     deployStart.current = performance.now();
     setArenaReady(false);
     setPhase("deploy");
