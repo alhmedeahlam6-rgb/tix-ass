@@ -41,6 +41,7 @@ import { combinePassives, type Loadout } from "./skills";
 import { TACTICAL_BONUS, rollArmorLevel, TACTICALS } from "./tactical";
 import { PETS } from "./pets";
 import { applySkinStats } from "./weaponSkins";
+import { applyAttachmentStats } from "./attachments";
 import { createArmorPickupMesh, createArmorPiece, applyArmor, emptyArmor, equipArmor, shouldPickupArmor, armorIconLabel, type ArmorState } from "./armor";
 import { createPingMarker, updatePings, nextPingKind, pingKindAtIndex, type PingKind, type Ping } from "./ping";
 import { addDaySkybox, DAY_HORIZON, type Skybox } from "./skybox";
