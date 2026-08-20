@@ -176,6 +176,8 @@ type Fighter = {
   ai: BotBrain | null;
   /** equipped armor (vest + helmet) */
   armor: ArmorState;
+  /** carried backpack and FF coins */
+  backpack: Backpack;
 };
 
 type HudFighter = { id: string; team: Team; hp: number; alive: boolean; isHuman: boolean };
