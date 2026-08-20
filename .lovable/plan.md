@@ -97,7 +97,7 @@
 ## Phase 5: Looting & Inventory
 - Auto-Pickup: Automatically sucks loot into your inventory by walking over it.
 - Auto-Pickup Priority: Settings for Medkits, Ammo, or Attachments first.
-- Backpack System: Level 1, 2, and 3 bags that increase carry capacity.
+- X Backpack System: Level 1, 2, and 3 bags that increase carry capacity.
 - X Armor System (Vests): Level 1 to 4 vests that reduce body damage.
 - X Armor System (Helmets): Level 1 to 4 helmets that reduce headshot damage.
 - Armor Attachments: Thickener or HP booster attachments for vests.
@@ -107,7 +107,7 @@
 - Weapon Attachments - Magazine: Increases bullet capacity and reload speed.
 - Weapon Attachments - Stock: Increases movement speed while aiming.
 - Weapon Attachments - Scopes: 2x, 4x, and Thermal scopes.
-- FF Coins: Yellow tokens looted off the ground used as in-match currency.
+- X FF Coins: Yellow tokens looted off the ground used as in-match currency.
 
 ## Phase 6: Combat & Survival Mechanics
 - Aim Assist (Default): Crosshair magnetically locks onto the enemy's chest when firing.
