@@ -223,6 +223,8 @@ export function applyMatchRewards(
     headshots,
     characterId,
     bountyBonus,
+    rankPoints,
+    rankTier,
   }: {
     won: boolean;
     kills: number;
@@ -230,6 +232,8 @@ export function applyMatchRewards(
     headshots: number;
     characterId?: string;
     bountyBonus?: number;
+    rankPoints?: number;
+    rankTier?: string;
   }
 ): PlayerProfile {
   const next = { ...p };
@@ -252,6 +256,14 @@ export function applyMatchRewards(
   while (next.booyahPassXp >= 1000) {
     next.booyahPassXp -= 1000;
     next.booyahPassTier += 1;
+  }
+
+  // Ranked ladder update.
+  if (typeof rankPoints === "number") {
+    next.rankPoints = Math.max(0, next.rankPoints + rankPoints);
+  }
+  if (rankTier) {
+    next.rankTier = rankTier;
   }
 
   // Character Link progress: +1 match toward the operative used this game.
