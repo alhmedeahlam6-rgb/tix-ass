@@ -1,3 +1,5 @@
+import type { Weapon } from "./weapons";
+
 /**
  * Weapon attachments that alter in-match stats.
  *
