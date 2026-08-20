@@ -137,6 +137,8 @@ export function loadProfile(): PlayerProfile {
       booyahPassTier: num(saved.booyahPassTier, 0),
       booyahPassXp: num(saved.booyahPassXp, 0),
       booyahPassClaimed: Array.isArray(saved.booyahPassClaimed) ? saved.booyahPassClaimed.map((n) => num(n, 0)).filter((n) => n > 0) : [],
+      rankPoints: num(saved.rankPoints, 0),
+      rankTier: typeof saved.rankTier === "string" && saved.rankTier ? saved.rankTier : "Bronze V",
       characterProgress: isRecordOfNumbers(saved.characterProgress) ? saved.characterProgress : {},
       loadout: saved.loadout && typeof saved.loadout === "object" ? loadLoadoutFrom(saved.loadout) : base.loadout,
       pet: typeof saved.pet === "string" && saved.pet ? loadPetFrom(saved.pet) : base.pet,
