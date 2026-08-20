@@ -9,7 +9,7 @@ import { useState } from "react";
 import { Users, X, Trophy, Swords, Map as MapIcon } from "lucide-react";
 
 import { MAP_LIST, type MapId } from "./maps";
-import { MODES, MATCH_TYPES, DEFAULT_MODE, DEFAULT_MATCH_TYPE, type GameMode, type MatchType } from "./modes";
+import { MODES, MATCH_TYPES, MODE_IDS, DEFAULT_MODE, DEFAULT_MATCH_TYPE, type GameMode, type MatchType } from "./modes";
 import keyArt from "@/assets/splash-key-art.jpg";
 import outpostCard from "@/assets/map-outpost-card.jpg";
 
