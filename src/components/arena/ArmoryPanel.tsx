@@ -1,6 +1,7 @@
-import { X, Shirt, Check, Gem } from "lucide-react";
+import { X, Shirt, Check, Gem, Crosshair } from "lucide-react";
 import { WEAPONS, getWeapon } from "./weapons";
 import { SKIN_RARITY_COLORS, WEAPON_SKINS, getSkin, rarityLabel } from "./weaponSkins";
+import { ATTACHMENTS, attachmentsForWeapon, attachmentStatText, getAttachment } from "./attachments";
 import { type PlayerProfile } from "./playerProfile";
 import { hexCss } from "./characters";
 
