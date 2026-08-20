@@ -105,12 +105,12 @@
 - X Armor System (Vests): Level 1 to 4 vests that reduce body damage.
 - X Armor System (Helmets): Level 1 to 4 helmets that reduce headshot damage.
 - Armor Attachments: Thickener or HP booster attachments for vests.
-- Weapon Attachments - Muzzle: Increases damage range.
-- Weapon Attachments - Silencer: Hides your shots from the minimap.
-- Weapon Attachments - Foregrip: Reduces bullet spread and recoil.
-- Weapon Attachments - Magazine: Increases bullet capacity and reload speed.
-- Weapon Attachments - Stock: Increases movement speed while aiming.
-- Weapon Attachments - Scopes: 2x, 4x, and Thermal scopes.
+- X Weapon Attachments - Muzzle: Increases damage range.
+- X Weapon Attachments - Silencer: Hides your shots from the minimap.
+- X Weapon Attachments - Foregrip: Reduces bullet spread and recoil.
+- X Weapon Attachments - Magazine: Increases bullet capacity and reload speed.
+- X Weapon Attachments - Stock: Increases movement speed while aiming.
+- X Weapon Attachments - Scopes: 2x, 4x, and Thermal scopes.
 - X FF Coins: Yellow tokens looted off the ground used as in-match currency.
 
 ## Phase 6: Combat & Survival Mechanics
