@@ -35,6 +35,10 @@ export type PlayerProfile = {
   booyahPassXp: number;
   /** claimed Booyah Pass reward tiers */
   booyahPassClaimed: number[];
+  /** ranked ladder points */
+  rankPoints: number;
+  /** current ranked tier name */
+  rankTier: string;
   /** matches played with each character for Character Link unlocks */
   characterProgress: Record<string, number>;
   /** active loadout: one active power + up to three passive skills */
