@@ -113,6 +113,7 @@ Last full audit: 2026-08-19.
 - Health, ammo, weapon slots, ability cooldown ring, gloo/medkit/bomb counters.
 - Minimap (`Minimap.tsx`) with teammates, enemies and geometry.
 - Kill feed, streak banner, round/score header, personal K/D readout.
+- Squad panel: teammate name, HP bar, alive/dead count (shown outside warmup/match end).
 - Crosshair engine: cross / dot / circle / none, custom colour, size, thickness, opacity, dynamic bloom, centre dot.
 - HUD opacity, HUD scale and per-element toggles.
 
