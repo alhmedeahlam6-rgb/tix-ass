@@ -91,6 +91,8 @@ import {
   isDeflectionMelee,
   type Weapon,
 } from "./weapons";
+import { applyAttachmentStats } from "./attachments";
+import { applySkinStats } from "./weaponSkins";
 import { createSafeZone, updateSafeZone, damageOutsideZone, createSafeZoneVisual, type SafeZone } from "./safeZone";
 import { defaultBackpack, scanFfCoinPickups, spawnFfCoins, disposeFfCoins, type Backpack, type BackpackLevel, type FfCoinPickup } from "./backpack";
 import {
