@@ -61,7 +61,7 @@
 - Loadout - Airdrop: Calls in a personal loot crate during the match.
 - X Loadout - Bounty Token: Gives extra loot when you get your first kill.
 - X Loadout - Armor Crate: Start the match with a random level helmet/vest.
-- Loadout - Leg Pockets: Increases starting backpack capacity.
+- X Loadout - Leg Pockets: Increases starting backpack capacity.
 - Spawn Island: The 60-second waiting lobby where players run around before the plane.
 - Spawn Island Interactions: Throwing snowballs/fireworks at other players.
 
