@@ -3103,6 +3103,7 @@ export default function LoneWolfArena({ onReady, onExit, mapId = "frostline", ga
               : "knife") as string;
           const f: Fighter = {
             id,
+            name,
             team,
             isHuman,
             group: null,
