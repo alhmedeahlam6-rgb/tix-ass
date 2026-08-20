@@ -51,6 +51,10 @@ export type PlayerProfile = {
   ownedSkins: string[];
   /** weaponId -> equipped skin id */
   equippedSkins: Record<string, string>;
+  /** owned weapon attachment ids */
+  ownedAttachments: string[];
+  /** weaponId -> equipped attachment id */
+  equippedAttachments: Record<string, string>;
   /** owned vault item ids (skins, passives, pets) */
   vault: string[];
 };
