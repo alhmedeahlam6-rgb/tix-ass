@@ -156,6 +156,7 @@ const MATCH_CONFIG = {
 
 type Fighter = {
   id: string;
+  name: string;
   team: Team;
   isHuman: boolean;
   group: THREE.Group | null;
