@@ -15,8 +15,9 @@ import { defaultCharacter, loadCharacter, saveCharacter, type ArenaCharacter } f
 import { defaultSettings, loadSettings, saveSettings, type ArenaSettings } from "./settings";
 import { arenaAssets, preloadAll } from "./preload";
 import { initKeyboardLayout } from "./keyboardLayout";
-import MapSelect from "./MapSelect";
+import ModeSelect from "./ModeSelect";
 import { type MapId } from "./maps";
+import { DEFAULT_MODE, DEFAULT_MATCH_TYPE, type GameMode, type MatchType } from "./modes";
 import { loadProfile, saveProfile, levelFromProfile, type PlayerProfile } from "./playerProfile";
 import { saveLoadout } from "./skills";
 import { savePet } from "./pets";
