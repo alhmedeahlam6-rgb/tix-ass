@@ -99,18 +99,18 @@ type AttachmentProfile = {
   equippedAttachments: Record<string, string>;
 };
 
-function getEffectiveWeapon(weaponId: string, profile: AttachmentProfile | null): Weapon | null {
+function getEffectiveWeapon(weaponId: string, profile: AttachmentProfile | null | undefined): Weapon | null {
   const base = getWeapon(weaponId);
   if (!base) return null;
   const skinned = applySkinStats(base, profile?.equippedSkins[weaponId]);
   return applyAttachmentStats(skinned ?? undefined, profile?.equippedAttachments[weaponId] ?? null) ?? base;
 }
 
-function getMagazine(weaponId: string, profile: AttachmentProfile | null) {
+function getMagazine(weaponId: string, profile: AttachmentProfile | null | undefined) {
   return getEffectiveWeapon(weaponId, profile)?.magazine ?? getBaseMagazine(weaponId);
 }
 
-function getReloadTime(weaponId: string, profile: AttachmentProfile | null) {
+function getReloadTime(weaponId: string, profile: AttachmentProfile | null | undefined) {
   const base = getBaseReloadTime(weaponId);
   const attachment = getAttachment(profile?.equippedAttachments[weaponId] ?? null);
   if (!attachment || attachment.stats.reloadSpeed == null) return base;
