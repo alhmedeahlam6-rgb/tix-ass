@@ -85,9 +85,9 @@ import {
   getWeaponRange,
   getWeaponFireInterval,
   getWeaponBehavior,
-  getMagazine,
+  getMagazine as getBaseMagazine,
   getReserveAmmo,
-  getReloadTime,
+  getReloadTime as getBaseReloadTime,
   isDeflectionMelee,
   type Weapon,
 } from "./weapons";
